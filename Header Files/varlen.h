@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class Person;
+class Student;
 
 struct Field
 {

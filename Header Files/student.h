@@ -1,20 +1,26 @@
 #include <iostream>
+#include<map>
 //#include "fixtext.h"
 //#include "lentext.h"
 #include "varlen.h"
 
 using namespace std;
 
-class Person
+class Student
 {
 public:
 	// fields
 	short	id;
 	char	Name[11];
+    float gpa;
+    int grade; // 1 -- 4
+//    map<string, int> subject_to_degree;
+//    string subjects[3];
+//    int degrees[3];
 
 	//operations
-	Person();
-	Person(short shId, char name[]);
+	Student();
+	Student(short shId, char name[], float gpa, /*int degrees[],*/ int grade);
 
 	void InitRecord(VariableLengthRecord&); //set Record  Configuration
 	
