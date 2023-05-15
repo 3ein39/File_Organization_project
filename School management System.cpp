@@ -39,7 +39,7 @@ void gotoxy(int x, int y);
 int main() {
 	int x;
 	cout << "1-student affairs department" << endl;
-	cout << "2-personnel department" << endl << endl;	
+//	cout << "2-personnel department" << endl << endl;
 	cout << "For exit press 0\n";
 	
 	cin >> x;
