@@ -2,21 +2,24 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstring>
 
 using namespace std;
 
-void main()
+int main()
 {
-	Person person;
+	Student student;
 
 	VariableLengthRecord outRecord, inRecord;
 
-	person.id = 120;
-	strcpy_s(person.Name, "Ames");
+	student.id = 120;
+	strcpy(student.Name, "Ames");
+    student.gpa = 3.6;
+    student.grade = 2;
 
-	person.InitRecord(outRecord);
+	student.InitRecord(outRecord);
 
-	cout << "pack person " << person.Pack(outRecord) << endl;
+	cout << "pack student " << student.Pack(outRecord) << endl;
 
 
 	#pragma region Writing (Packing)
@@ -28,16 +31,18 @@ void main()
 	outRecord.WriteHeader(TestOut);  // Only Once.
 	
 	outRecord.Write(TestOut);
-	person.Print(cout);
+	student.Print(cout);
 
-	person.id = 130;
-	strcpy_s(person.Name, "Ahmed");
+	student.id = 130;
+	strcpy(student.Name, "Ahmed");
+    student.gpa = 2;
+    student.grade = 1;
 	
-	person.Pack(outRecord);  // Precord  => array  of  char   120Ames| , 130Ahmed|
+	student.Pack(outRecord);  // Precord  => array  of  char   120Ames| , 130Ahmed|
 
 	outRecord.Write(TestOut);
 
-	person.Print(cout);
+	student.Print(cout);
 
 	TestOut.close();
 
@@ -50,13 +55,13 @@ void main()
 	inRecord.ReadHeader(TestIn);
 	
 	cout <<"read "<<inRecord.Read(TestIn)<<endl;
-	cout <<"unpack "<<person.Unpack(inRecord)<<endl;	
-	person.Print(cout);
+	cout <<"unpack "<<student.Unpack(inRecord)<<endl;
+	student.Print(cout);
 
 
 	cout <<"read "<<inRecord.Read(TestIn)<<endl;
-	cout <<"unpack "<<person.Unpack(inRecord)<<endl;
-	person.Print(cout);
+	cout <<"unpack "<<student.Unpack(inRecord)<<endl;
+	student.Print(cout);
 	#pragma endregion
 
 }
