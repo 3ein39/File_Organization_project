@@ -29,54 +29,61 @@ void AddNewStudent() {
     student.InitRecord(outRecord);
     cout << "pack student " << student.Pack(outRecord) << endl;
 #pragma region Writing (Packing)
-    ofstream TestOut("deltext.dat", ios::out | ios::binary);
+    ofstream TestOut("deltext.dat", ios::out | ios::binary | ios::app);
     if (initial)
          outRecord.WriteHeader(TestOut), initial = false;  // Only Once.
     outRecord.Write(TestOut);
-    ++studentCount;
     student.Print(cout);
+
+    TestOut.close();
+#pragma endregion
+
 }
 
 void MngStdPerInfo();
 
-void ShowAllData() {
-    VariableLengthRecord inRecord;
-    ifstream TestIn("deltext.dat", ios::in | ios::binary);
-
-    while (inRecord.Read(TestIn)) {
-        Student student;
-
-        // Unpack the student data
-        student.Unpack(inRecord);
-
-        // Display the student details
-        cout << "ID: " << student.id << endl;
-        cout << "Name: " << student.Name << endl;
-        cout << "GPA: " << student.gpa << endl;
-        cout << "Grade: " << student.grade << endl;
-        cout << endl;
-    }
-
-    TestIn.close();
-}
 //void ShowAllData() {
-//    Student student;
-//    VariableLengthRecord outRecord, inRecord;
+//    VariableLengthRecord inRecord;
 //#pragma region Reading (UnPacking)
 //
-//    ifstream TestIn ("deltext.dat", ios::in | ios::binary);
+//    ifstream TestIn("deltext.dat", ios::in | ios::binary);
+//    inRecord.ReadHeader(TestIn);
 //
-//    while(inRecord.Read(TestIn)) {
-//        inRecord.ReadHeader(TestIn);
-////        cout <<"read "<<inRecord.Read(TestIn)<<endl;
-//        cout <<"unpack "<<student.Unpack(inRecord)<<endl;
+//    if (!TestIn)
+//        cout << "Can't open file";
+//
+//    while (inRecord.Read(TestIn)) {
+//        Student student;
+//
+//        // Unpack the student data
+//        student.Unpack(inRecord);
+//
+//        // Display the student details
 //        student.Print(cout);
-//
 //    }
-//    TestIn.close();
 //#pragma endregion
 //
+//
+//    TestIn.close();
 //}
+void ShowAllData() {
+    Student student;
+    VariableLengthRecord outRecord, inRecord;
+#pragma region Reading (UnPacking)
+
+    ifstream TestIn ("deltext.dat", ios::in | ios::binary);
+    inRecord.ReadHeader(TestIn);
+
+    while(inRecord.Read(TestIn)) {
+//        cout <<"read "<<inRecord.Read(TestIn)<<endl;
+        cout <<"unpack "<<student.Unpack(inRecord)<<endl;
+        student.Print(cout);
+
+    }
+    TestIn.close();
+#pragma endregion
+
+}
 
 void STD();
 
