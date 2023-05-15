@@ -83,15 +83,20 @@ int main()
 //
 }
 
+void updateStudentInfo();
+
 void MngStdPerInfo() {
     system("clear");
     int s;
-    cout << "1-Add New Student" << endl << endl;
+    cout << "1-Add New Student" << endl;
+    cout << "2-Update Student Info" << endl;
     cout << "-1 Back" << endl;
     cout << "0- Exit" << endl;
     cin >> s;
     switch (s) {
         case 1:system("clear"); AddNewStudent();
+            break;
+        case 2: updateStudentInfo();
             break;
         case -1: STD();
             break;
@@ -126,8 +131,68 @@ void STD() {
     }
     STD();
 }
+void updateStudentInfo() {
+    int searchID;
+    cout << "Enter the ID of the student to update: ";
+    cin >> searchID;
 
-void ShowAllDate() {
+    fstream file("deltext.dat", ios::in | ios::out | ios::binary);
+
+    if (!file) {
+        cout << "Unable to open the file." << endl;
+        return;
+    }
+
+    VariableLengthRecord record;
+    Student student;
+
+    bool found = false;
+    record.ReadHeader(file);
+    while (record.Read(file)) {
+        // Unpack the record into the student object
+        student.Unpack(record);
+        cout << student.id << endl;
+        if (student.id == searchID) {
+            // Student found, update the information
+            cout << "Enter new Name: ";
+            cin.ignore();
+            cin.getline(student.Name, 11);
+
+            cout << "Enter new GPA: ";
+            cin >> student.gpa;
+
+            cout << "Enter new Grade: ";
+            cin >> student.grade;
+
+            // Mark the current record as deleted
+//            student.id = -1;
+
+            // Pack the updated student data into the record
+            student.Pack(record);
+
+            // Move the file pointer to the end of the file
+            file.seekp(0, ios::end);
+
+            // Write the updated record to the file
+            record.Write(file);
+
+            found = true;
+            break;
+        }
+    }
+
+    file.close();
+
+    if (found) {
+        cout << "Student information updated successfully!" << endl;
+    } else {
+        cout << "Student not found." << endl;
+    }
+}
+
+
+
+void ShowAllData() {
     Student student;
     VariableLengthRecord outRecord, inRecord;
 #pragma region Reading (UnPacking)
