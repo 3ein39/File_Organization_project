@@ -14,14 +14,29 @@ where:
 
 The project provides several operations for managing student records, including adding a new record, updating an existing record, deleting a record, and searching for records by ID or name.
 
-## Struct Description
+## Student Information
 
-The `Student` struct contains the following fields:
+The `Student` class contains the following fields:
 
 - `Id`: An integer representing the student's ID.
 - `Name`: A string representing the student's name.
 - `Grade`: An integer representing the student's grade.
 - `Gpa`: A float representing the student's grade point average.
+
+
+### Course Enrollments
+
+Each enrollment record represents a student's enrollment in multiple courses. Each enrollment consists of the following fields:
+
+> StudentId|Course1|Grade1|Course2|Grade2|...|CourseN|GradeN|
+
+
+- `StudentId` is an integer representing the student's ID.
+- `numCourses` is an integer representing the student's enrolled courses count.
+- `Course1`, `Course2`, ..., `CourseN` are strings representing the names of the courses.
+- `Grade1`, `Grade2`, ..., `GradeN` are strings representing the grades achieved in each course.
+
+The number of courses can vary for each enrollment.
 
 ## Class Description
 
