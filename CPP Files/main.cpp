@@ -41,6 +41,8 @@ void AddNewStudent() {
 
 void MngStdPerInfo();
 
+void findStdByID();
+
 void ShowAllData();
 
 void STD();
@@ -125,12 +127,38 @@ void deleteStudent() {
     }
 }
 
+void findStdByID() {
+    int searchID;
+    cout << "Enter the ID of the student to update: ";
+    cin >> searchID;
+
+
+     Student student;
+    VariableLengthRecord outRecord, inRecord;
+#pragma region Reading (UnPacking)
+
+    ifstream TestIn ("deltext.dat", ios::in | ios::binary);
+    inRecord.ReadHeader(TestIn);
+
+    while(inRecord.Read(TestIn)) {
+//        cout <<"read "<<inRecord.Read(TestIn)<<endl;
+        bool res = student.Unpack(inRecord);
+//        cout <<"unpack "<<student.Unpack(inRecord)<<endl;
+        if (student.id == searchID)
+            student.Print(cout);
+    }
+    TestIn.close();
+#pragma endregion
+
+}
+
 void MngStdPerInfo() {
     system("clear");
     int s;
     cout << "1-Add New Student" << endl;
     cout << "2-Update Student Info" << endl;
     cout << "3-Delete Student" << endl;
+    cout << "4-Find Student By ID" << endl;
     cout << "-1 Back" << endl;
     cout << "0- Exit" << endl;
     cin >> s;
@@ -140,6 +168,8 @@ void MngStdPerInfo() {
         case 2: updateStudentInfo();
             break;
         case 3: deleteStudent();
+            break;
+        case 4: findStdByID();
             break;
         case -1: STD();
             break;
