@@ -6,48 +6,19 @@
 
 using namespace std;
 
+
 bool initial = true;
-
-void AddNewStudent() {
-    Student student;
-    VariableLengthRecord outRecord, inRecord;
-
-    cout << "Enter ID: ";
-    cin >> student.id;
-
-    cout << "Enter Name: ";
-    cin.ignore();
-    cin.getline(student.Name, 11);
-
-    cout << "Enter GPA: ";
-    cin >> student.gpa;
-
-    cout << "Enter Grade: ";
-    cin >> student.grade;
-
-    student.InitRecord(outRecord);
-    cout << "pack student " << student.Pack(outRecord) << endl;
-#pragma region Writing (Packing)
-    ofstream TestOut("deltext.dat", ios::out | ios::binary | ios::app);
-    if (initial)
-         outRecord.WriteHeader(TestOut), initial = false;  // Only Once.
-    outRecord.Write(TestOut);
-    student.Print(cout);
-
-    TestOut.close();
-#pragma endregion
-
-}
+void AddNewStudent();
 
 void MngStdPerInfo();
-
 void findStdByID();
-
 void ShowAllData();
-
 void STD();
-
 void deleteStudent();
+void updateStudentInfo();
+
+
+
 int main()
 {
   STD();
@@ -86,7 +57,6 @@ int main()
 //
 }
 
-void updateStudentInfo();
 
 void deleteStudent() {
         int searchID;
@@ -126,7 +96,6 @@ void deleteStudent() {
         cout << "Student not found." << endl;
     }
 }
-
 void findStdByID() {
     int searchID;
     cout << "Enter the ID of the student: ";
@@ -151,7 +120,6 @@ void findStdByID() {
 #pragma endregion
 
 }
-
 void MngStdPerInfo() {
     system("clear");
     int s;
@@ -179,7 +147,6 @@ void MngStdPerInfo() {
     }
     MngStdPerInfo();
 }
-
 void STD() {
     system("clear");
     int s;
@@ -260,9 +227,35 @@ void updateStudentInfo() {
         cout << "Student not found." << endl;
     }
 }
+void AddNewStudent() {
+    Student student;
+    VariableLengthRecord outRecord, inRecord;
 
+    cout << "Enter ID: ";
+    cin >> student.id;
 
+    cout << "Enter Name: ";
+    cin.ignore();
+    cin.getline(student.Name, 11);
 
+    cout << "Enter GPA: ";
+    cin >> student.gpa;
+
+    cout << "Enter Grade: ";
+    cin >> student.grade;
+
+    student.InitRecord(outRecord);
+    cout << "pack student " << student.Pack(outRecord) << endl;
+#pragma region Writing (Packing)
+    ofstream TestOut("deltext.dat", ios::out | ios::binary | ios::app);
+    if (initial)
+        outRecord.WriteHeader(TestOut), initial = false;  // Only Once.
+    outRecord.Write(TestOut);
+    student.Print(cout);
+
+    TestOut.close();
+#pragma endregion
+}
 void ShowAllData() {
     Student student;
     VariableLengthRecord outRecord, inRecord;
