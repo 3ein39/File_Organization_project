@@ -129,7 +129,7 @@ void deleteStudent() {
 
 void findStdByID() {
     int searchID;
-    cout << "Enter the ID of the student to update: ";
+    cout << "Enter the ID of the student: ";
     cin >> searchID;
 
 
