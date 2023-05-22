@@ -1,4 +1,5 @@
 #include "student.h"
+#include "enrollment.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -8,6 +9,7 @@ using namespace std;
 
 
 bool initial = true;
+bool initial2 = true;
 void AddNewStudent();
 
 void MngStdPerInfo();
@@ -231,7 +233,7 @@ void updateStudentInfo() {
 }
 void AddNewStudent() {
     Student student;
-    VariableLengthRecord outRecord, inRecord;
+    VariableLengthRecord outRecord;
 
     cout << "Enter ID: ";
     cin >> student.id;
@@ -248,7 +250,7 @@ void AddNewStudent() {
 
     student.InitRecord(outRecord);
     cout << "pack student " << student.Pack(outRecord) << endl;
-#pragma region Writing (Packing)
+#pragma region Writing (Packing) for student file
     ofstream TestOut("deltext.dat", ios::out | ios::binary | ios::app);
     if (initial)
         outRecord.WriteHeader(TestOut), initial = false;  // Only Once.
@@ -257,6 +259,38 @@ void AddNewStudent() {
 
     TestOut.close();
 #pragma endregion
+
+    Enrollment enroll;
+    VariableLengthRecord outRecord2;
+
+    cout << "Enter number of courses: ";
+    cin >> enroll.numCourses;
+
+    enroll.studentID = student.id;
+
+    enroll.courses = new string[enroll.numCourses];
+    enroll.grades = new string[enroll.numCourses];
+
+    for (int i = 0; i < enroll.numCourses; ++i) {
+        cout << "Enter Name for " << i + 1 << " course: ";
+        cin >> enroll.courses[i];
+
+        cout << "Enter grade for " << i + 1 << " course: ";
+        cin >> enroll.grades[i];
+    }
+
+    enroll.WriteEnrollment(outRecord2);
+    cout << "pack enrollment " << enroll.Pack(outRecord) << endl;
+#pragma region Writing (Packing) for student file
+    ofstream TestOutt("enrollments.dat", ios::out | ios::binary | ios::app);
+    if (initial2)
+        outRecord2.WriteHeader(TestOutt), initial2 = false;  // Only Once.
+    outRecord2.Write(TestOutt);
+    enroll.PrintEnrollment();
+
+    TestOutt.close();
+#pragma endregion
+
 }
 void ShowAllData() {
     Student student;

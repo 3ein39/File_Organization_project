@@ -8,23 +8,22 @@
 #include "varlen.h"
 
 class Enrollment {
-private:
-    std::string studentID;
+public:
+    short studentID;
     std::string* courses;
     std::string* grades;
-    int numCourses;
+    short numCourses;
 
-public:
     Enrollment();
-    Enrollment(const std::string& id, int num, const std::string* crs, const std::string* grds);
+//    Enrollment(const std::string& id, int num, const std::string* crs, const std::string* grds);
     ~Enrollment();
 
-    void Pack(VariableLengthRecord& record) const;
-    void Unpack(VariableLengthRecord& record) ;
+    int Pack(VariableLengthRecord& record) const;
+    int Unpack(VariableLengthRecord& record) ;
 
-    static void WriteEnrollment( Enrollment& enrollment);
+    void WriteEnrollment( VariableLengthRecord& record);
     static void ReadEnrollments();
-    static void PrintEnrollment(Enrollment& enrollment);
+    void PrintEnrollment();
 
 };
 
