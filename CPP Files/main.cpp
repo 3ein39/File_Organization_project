@@ -45,6 +45,7 @@ void ShowAllData();
 
 void STD();
 
+void deleteStudent();
 int main()
 {
   STD();
@@ -85,11 +86,52 @@ int main()
 
 void updateStudentInfo();
 
+void deleteStudent() {
+        int searchID;
+    cout << "Enter the ID of the student to delete: ";
+    cin >> searchID;
+
+    fstream file("deltext.dat", ios::in | ios::out | ios::binary);
+
+    if (!file) {
+        cout << "Unable to open the file." << endl;
+        return;
+    }
+
+    VariableLengthRecord record;
+    Student student;
+
+    bool found = false;
+    record.ReadHeader(file);
+    while (record.Read(file)) {
+        // Unpack the record into the student object
+        student.Unpack(record);
+        cout << student.id << endl;
+        if (student.id == searchID) {
+            file.seekp(-record.RecordSize(), ios::cur);
+            short newId = -1;
+            file.write((char*)& newId, sizeof(short));
+
+            found = true;
+            break;
+        }
+    }
+
+    file.close();
+
+    if (found) {
+        cout << "Student deleted successfully!" << endl;
+    } else {
+        cout << "Student not found." << endl;
+    }
+}
+
 void MngStdPerInfo() {
     system("clear");
     int s;
     cout << "1-Add New Student" << endl;
     cout << "2-Update Student Info" << endl;
+    cout << "3-Delete Student" << endl;
     cout << "-1 Back" << endl;
     cout << "0- Exit" << endl;
     cin >> s;
@@ -97,6 +139,8 @@ void MngStdPerInfo() {
         case 1:system("clear"); AddNewStudent();
             break;
         case 2: updateStudentInfo();
+            break;
+        case 3: deleteStudent();
             break;
         case -1: STD();
             break;
