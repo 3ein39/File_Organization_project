@@ -203,6 +203,7 @@ void ShowAllData() {
     while(inRecord.Read(TestIn)) {
 //        cout <<"read "<<inRecord.Read(TestIn)<<endl;
         cout <<"unpack "<<student.Unpack(inRecord)<<endl;
+        if (student.id == -1) continue;
         student.Print(cout);
 
     }
