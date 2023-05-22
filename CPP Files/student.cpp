@@ -50,8 +50,7 @@ int Student::Pack(VariableLengthRecord& record)
 	record.Clear(recordSize);
 
 	result = record.Pack(0, (void*)&id, sizeof(short));
-    cout <<"id after pack" << id << endl;
-	
+
 	result = result && record.Pack(1, (void*)Name, strlen(Name));
 
     result = result && record.Pack(2, (void*)&gpa, sizeof(gpa));

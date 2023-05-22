@@ -106,7 +106,6 @@ void deleteStudent() {
     while (record.Read(file)) {
         // Unpack the record into the student object
         student.Unpack(record);
-        cout << student.id << endl;
         if (student.id == searchID) {
             file.seekp(-record.RecordSize(), ios::cur);
             short newId = -1;
@@ -195,7 +194,6 @@ void updateStudentInfo() {
     while (record.Read(file)) {
         // Unpack the record into the student object
         student.Unpack(record);
-        cout << student.id << endl;
         if (student.id == searchID) {
             // Student found, update the information
             cout << "Enter new Name: ";
@@ -212,7 +210,6 @@ void updateStudentInfo() {
             short newId = -1;
             file.write((char*)& newId, sizeof(short));
 
-            cout << "id before" << student.id << endl;
             // Pack the updated student data into the record
             file.seekp(0, ios::end);
             student.Pack(record);
@@ -246,8 +243,10 @@ void ShowAllData() {
 
     while(inRecord.Read(TestIn)) {
 //        cout <<"read "<<inRecord.Read(TestIn)<<endl;
-        cout <<"unpack "<<student.Unpack(inRecord)<<endl;
+        bool res = student.Unpack(inRecord);
+//        cout <<"unpack "<<student.Unpack(inRecord)<<endl;
         if (student.id == -1) continue;
+        cout << "unpack " << res << endl;
         student.Print(cout);
 
     }
