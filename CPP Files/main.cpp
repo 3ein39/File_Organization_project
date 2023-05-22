@@ -16,6 +16,7 @@ void ShowAllData();
 void STD();
 void deleteStudent();
 void updateStudentInfo();
+void showDeletedData();
 
 
 
@@ -152,6 +153,7 @@ void STD() {
     int s;
     cout << "1-Manage Student Personal Information" << endl;
     //    cout << "2-Manage Student Academic Record" << endl;
+    cout << "2-Show Deleted Records" << endl;
     cout << "3-Show all student Data" << endl;
     //    cout << "4-Find student by ID" << endl << endl;
     //    cout << "For exit press 0\n";
@@ -159,8 +161,8 @@ void STD() {
     switch (s) {
     case 1:system("clear"); MngStdPerInfo();
         break;
-        //        case 2:controle();
-    //            break;
+    case 2: showDeletedData();
+        break;
     case 3:ShowAllData();
         break;
     //        case 4: FindStudentById();
@@ -269,6 +271,27 @@ void ShowAllData() {
         bool res = student.Unpack(inRecord);
 //        cout <<"unpack "<<student.Unpack(inRecord)<<endl;
         if (student.id == -1) continue;
+        cout << "unpack " << res << endl;
+        student.Print(cout);
+
+    }
+    TestIn.close();
+#pragma endregion
+
+}
+void showDeletedData() {
+        Student student;
+    VariableLengthRecord outRecord, inRecord;
+#pragma region Reading (UnPacking)
+
+    ifstream TestIn ("deltext.dat", ios::in | ios::binary);
+    inRecord.ReadHeader(TestIn);
+
+    while(inRecord.Read(TestIn)) {
+//        cout <<"read "<<inRecord.Read(TestIn)<<endl;
+        bool res = student.Unpack(inRecord);
+//        cout <<"unpack "<<student.Unpack(inRecord)<<endl;
+        if (student.id != -1) continue;
         cout << "unpack " << res << endl;
         student.Print(cout);
 
