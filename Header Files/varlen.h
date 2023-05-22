@@ -57,4 +57,6 @@ public:
 
 	bool Read(istream&);
 	bool Write(ostream&) const;
+
+    int RecordSize() const;
 };

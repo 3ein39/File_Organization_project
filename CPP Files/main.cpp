@@ -164,14 +164,14 @@ void updateStudentInfo() {
             cout << "Enter new Grade: ";
             cin >> student.grade;
 
-            // Mark the current record as deleted
-//            student.id = -1;
+            file.seekp(-record.RecordSize(), ios::cur);
+            short newId = -1;
+            file.write((char*)& newId, sizeof(short));
 
+            cout << "id before" << student.id << endl;
             // Pack the updated student data into the record
-            student.Pack(record);
-
-            // Move the file pointer to the end of the file
             file.seekp(0, ios::end);
+            student.Pack(record);
 
             // Write the updated record to the file
             record.Write(file);

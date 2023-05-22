@@ -222,3 +222,6 @@ bool VariableLengthRecord::Write(ostream& stream) const
 	stream.write(pRecord, m_iRecordSize);
 	return !stream.fail();
 }
+int VariableLengthRecord::RecordSize() const {
+    return m_iRecordSize; // Return the size of the record
+}

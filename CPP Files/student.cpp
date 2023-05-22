@@ -40,7 +40,6 @@ void Student::InitRecord(VariableLengthRecord& record)
 //    record.AddField(8, 'D', '|');
 //    record.AddField(9, 'D', '|');
 }
-
 int Student::Pack(VariableLengthRecord& record)
 {
 	// pack the fields into a VariableLengthRecord, return  ( 1 )TRUE if all succeed, FALSE o/w
@@ -51,6 +50,7 @@ int Student::Pack(VariableLengthRecord& record)
 	record.Clear(recordSize);
 
 	result = record.Pack(0, (void*)&id, sizeof(short));
+    cout <<"id after pack" << id << endl;
 	
 	result = result && record.Pack(1, (void*)Name, strlen(Name));
 

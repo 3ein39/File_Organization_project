@@ -1,8 +1,10 @@
+#pragma once
 #include <iostream>
 #include<map>
 //#include "fixtext.h"
 //#include "lentext.h"
 #include "varlen.h"
+
 
 using namespace std;
 
