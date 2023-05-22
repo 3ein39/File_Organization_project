@@ -2,7 +2,7 @@
 
 The project is a simple file-based system for managing student records in C++. The system stores student records in a file using a variable-length record approach with a `|` delimiter. Each record is stored on a separate line with the fields separated by the `|` character in the following order:
 
-> Id|Name|Grade|Gpa
+> Id|Name|Grade|Gpa|
 
 
 where:
