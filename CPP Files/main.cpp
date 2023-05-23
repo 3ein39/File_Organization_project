@@ -22,10 +22,9 @@ void showDeletedData();
 void ShowGrades(int id);
 void updateStudentDegrees();
 void deleteDegree(int id);
-int main()
-{
-  STD();
-
+int main() {
+    STD();
+}
 void deleteStudent() {
     int searchID;
     cout << "Enter the ID of the student to delete: ";
