@@ -11,7 +11,7 @@ using namespace std;
 bool initial = true;
 bool initial2 = true;
 void AddNewStudent();
-
+void updateMenu();
 void MngStdPerInfo();
 void findStdByID();
 void ShowAllData();
@@ -20,7 +20,7 @@ void deleteStudent();
 void updateStudentInfo();
 void showDeletedData();
 void ShowGrades(int id);
-
+void updateStudentDegrees();
 
 int main()
 {
@@ -138,7 +138,7 @@ void MngStdPerInfo() {
     switch (s) {
         case 1:system("clear"); AddNewStudent();
             break;
-        case 2: updateStudentInfo();
+        case 2: updateMenu();
             break;
         case 3: deleteStudent();
             break;
@@ -177,7 +177,32 @@ void STD() {
     }
     STD();
 }
+
+void updateMenu() {
+    system("clear");
+    int s;
+    cout << "1-Update Student Info" << endl;
+    cout << "2-Update Student Degrees" << endl;
+    cout << "-1 Back" << endl;
+    cout << "0- Exit" << endl;
+    cin >> s;
+    switch (s) {
+        case 1:system("clear"), updateStudentInfo();
+            break;
+        case 2: updateStudentDegrees();
+            break;
+        case -1: MngStdPerInfo();
+            break;
+        case 0:exit(0);
+            break;
+        default: updateMenu();
+    }
+
+}
+
 void updateStudentInfo() {
+
+
     int searchID;
     cout << "Enter the ID of the student to update: ";
     cin >> searchID;
@@ -353,4 +378,59 @@ void ShowGrades(int id) {
     }
 
     file.close();
+}
+void updateStudentDegrees() {
+    int searchID;
+    cout << "Enter the ID of the student to update: ";
+    cin >> searchID;
+
+    fstream file("enrollments.dat", ios::in | ios::out | ios::binary);
+
+    if (!file) {
+        cout << "Unable to open the file." << endl;
+        return;
+    }
+
+    VariableLengthRecord record;
+    Enrollment enroll;
+
+    bool found = false;
+    record.ReadHeader(file);
+    while (record.Read(file)) {
+        // Unpack the record into the enroll object
+        enroll.Unpack(record);
+        if (enroll.studentID == searchID) {
+            // Student found, update the information
+
+            for (int i = 0; i < 3; ++i) {
+                cout << "Enter course name : " << " last : " << enroll.courses[i];
+                cin >> enroll.courses[i];
+
+                cout << "Enter course degree : " << " last : " << enroll.grades[i];
+                cin >> enroll.grades[i];
+            }
+
+            file.seekp(-record.RecordSize(), ios::cur);
+            short newId = -1;
+            file.write((char*)& newId, sizeof(short));
+
+            // Pack the updated enroll data into the record
+            file.seekp(0, ios::end);
+            enroll.Pack(record);
+
+            // Write the updated record to the file
+            record.Write(file);
+
+            found = true;
+            break;
+        }
+    }
+
+    file.close();
+
+    if (found) {
+        cout << "Student grades updated successfully!" << endl;
+    } else {
+        cout << "Student not found." << endl;
+    }
 }
