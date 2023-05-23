@@ -280,7 +280,7 @@ void AddNewStudent() {
     cout << "pack student " << student.Pack(outRecord) << endl;
 #pragma region Writing (Packing) for student file
     ofstream TestOut("deltext.dat", ios::out | ios::binary | ios::app);
-    if (initial)
+    if (TestOut.tellp() == 0)
         outRecord.WriteHeader(TestOut), initial = false;  // Only Once.
     outRecord.Write(TestOut);
     student.Print(cout);
@@ -307,7 +307,7 @@ void AddNewStudent() {
     cout << "pack enrollment " << enroll.Pack(outRecord2) << endl;
 #pragma region Writing (Packing) for enroll file
     ofstream TestOutt("enrollments.dat", ios::out | ios::binary | ios::app);
-    if (initial2)
+    if (TestOutt.tellp() == 0)
         outRecord2.WriteHeader(TestOutt), initial2 = false;  // Only Once.
     outRecord2.Write(TestOutt);
     enroll.PrintEnrollment();
