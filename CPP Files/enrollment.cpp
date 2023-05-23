@@ -26,11 +26,11 @@ Enrollment::Enrollment() {
 //        grades[i] = grds[i];
 //    }
 //}
-
-Enrollment::~Enrollment() {
-    delete[] courses;
-    delete[] grades;
-}
+//
+//Enrollment::~Enrollment() {
+//    delete[] courses;
+//    delete[] grades;
+//}
 
 int Enrollment::Pack(VariableLengthRecord& record) const {
 

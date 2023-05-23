@@ -16,7 +16,7 @@ public:
 
     Enrollment();
 //    Enrollment(const std::string& id, int num, const std::string* crs, const std::string* grds);
-    ~Enrollment();
+//    ~Enrollment();
 
     int Pack(VariableLengthRecord& record) const;
     int Unpack(VariableLengthRecord& record) ;
