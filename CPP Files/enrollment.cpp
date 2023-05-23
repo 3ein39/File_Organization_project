@@ -11,9 +11,6 @@ using namespace std;
 const string enrollmentsFile = "enrollments.dat";
 
 Enrollment::Enrollment() {
-    numCourses = 0;
-    courses = nullptr;
-    grades = nullptr;
 }
 
 //Enrollment::Enrollment(const string& id, int num, const string* crs, const string* grds) {
@@ -36,30 +33,36 @@ int Enrollment::Pack(VariableLengthRecord& record) const {
 
     int result, recordSize = 0;
     // id | numCourses
-    recordSize = 2 + 2;
-    for (int i = 0; i < numCourses; ++i) {
+    recordSize = 2 + (3 * 4);
+    for (int i = 0; i < 3; ++i) {
         recordSize += courses[i].size() + 1;
-        recordSize += grades[i].size() + 1;
     }
 
     record.Clear(recordSize);
 
     result = record.Pack(0, (void*)&studentID, sizeof(studentID));
-    result = record.Pack(1, (void*)&numCourses, sizeof(numCourses));
-    for (int i = 2; i < numCourses + 1; ++i) {
-        result = result && record.Pack(i + 1, (void*)courses[i].c_str(), courses[i].length() + 1);
-        result = result && record.Pack(i + numCourses + 1, (void*)grades[i].c_str(), grades[i].length() + 1);
-    }
+    result = result && record.Pack(1, (void*)courses[0].c_str(), courses[0].size());
+    result = result && record.Pack(2, (void*)&grades[0], courses[0].size());
+    result = result && record.Pack(3, (void*)courses[1].c_str(), courses[1].size());
+    result = result && record.Pack(4, (void*)&grades[1], courses[1].size());
+    result = result && record.Pack(5, (void*)courses[2].c_str(), courses[2].size());
+    result = result && record.Pack(6, (void*)&grades[2], courses[2].size());
     return result;
 }
 
 int Enrollment::Unpack(VariableLengthRecord& record) {
-    int result;
+    int result = true;
     result = result && record.Unpack(0, (char*)&studentID);
-    result = result && record.Unpack(1, (char*)&numCourses);
-    for (int i = 2; i < numCourses + 2; ++i) {
-        result = result && record.Unpack(i, (char*)courses[i - 2].c_str());
-        result = result && record.Unpack(i, (char*)grades[i - 2].c_str());
+
+    char temporary[255];
+    for (int i = 0; i < 3; ++i)
+    {
+        result = result && record.Unpack(i + 1, (char *)temporary, true);
+        courses[i] = temporary;
+
+        int gradeValue; // To store the grades with refrence
+        result = result && record.Unpack(i + 4, (char*)&gradeValue);
+        grades[i] = gradeValue;
     }
     return result;
 }
@@ -73,13 +76,14 @@ void Enrollment::WriteEnrollment(VariableLengthRecord& record) {
 
     Enrollment enrollment = *this;
 
-    record.init(enrollment.numCourses * 2 + 2); // Assuming each course has a corresponding grade
+    record.init(7); // Assuming each course has a corresponding grade
     record.AddField(0, 'D', '|');
     record.AddField(1, 'D', '|');
-    for (int i = 2; i < enrollment.numCourses + 2; ++i) {
-        record.AddField(i, 'D', '|'); // Field for course
-        record.AddField(i + enrollment.numCourses, 'D', '|'); // Field for grade
-    }
+    record.AddField(2, 'D', '|');
+    record.AddField(3, 'D', '|');
+    record.AddField(4, 'D', '|');
+    record.AddField(5, 'D', '|');
+    record.AddField(6, 'D', '|');
 
 //    enrollment.Pack(record);
 //    record.Write(file);
@@ -106,17 +110,18 @@ void Enrollment::ReadEnrollments() {
     file.close();
 }
 
-void Enrollment::PrintEnrollment() {
+void Enrollment::PrintEnrollment()
+{
     Enrollment enrollment = *this;
+    cout << "Enrollment Information:\n";
     cout << "Student ID: " << enrollment.studentID << endl;
-    cout << "Courses: ";
-    for (int i = 0; i < enrollment.numCourses; ++i) {
-        cout << enrollment.courses[i] << " ";
+    cout << "Courses:\n";
+    for (int i = 0; i < 3; ++i) {
+        cout << "\t- " << enrollment.courses[i] << endl;
     }
-    cout << endl;
-    cout << "Grades: ";
-    for (int i = 0; i < enrollment.numCourses; ++i) {
-        cout << enrollment.grades[i] << " ";
+    cout << "Grades:\n";
+    for (int i = 0; i < 3; ++i) {
+        cout << "\t- " << enrollment.grades[i] << endl;
     }
     cout << endl;
 }

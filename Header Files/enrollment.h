@@ -10,9 +10,8 @@
 class Enrollment {
 public:
     short studentID;
-    std::string* courses;
-    std::string* grades;
-    short numCourses;
+    string courses[3];
+    int grades[3];
 
     Enrollment();
 //    Enrollment(const std::string& id, int num, const std::string* crs, const std::string* grds);

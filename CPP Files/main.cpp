@@ -19,7 +19,7 @@ void STD();
 void deleteStudent();
 void updateStudentInfo();
 void showDeletedData();
-
+void ShowGrades(int id);
 
 
 int main()
@@ -263,15 +263,11 @@ void AddNewStudent() {
     Enrollment enroll;
     VariableLengthRecord outRecord2;
 
-    cout << "Enter number of courses: ";
-    cin >> enroll.numCourses;
 
     enroll.studentID = student.id;
 
-    enroll.courses = new string[enroll.numCourses];
-    enroll.grades = new string[enroll.numCourses];
 
-    for (int i = 0; i < enroll.numCourses; ++i) {
+    for (int i = 0; i < 3; ++i) {
         cout << "Enter Name for " << i + 1 << " course: ";
         cin >> enroll.courses[i];
 
@@ -280,8 +276,8 @@ void AddNewStudent() {
     }
 
     enroll.WriteEnrollment(outRecord2);
-    cout << "pack enrollment " << enroll.Pack(outRecord) << endl;
-#pragma region Writing (Packing) for student file
+    cout << "pack enrollment " << enroll.Pack(outRecord2) << endl;
+#pragma region Writing (Packing) for enroll file
     ofstream TestOutt("enrollments.dat", ios::out | ios::binary | ios::app);
     if (initial2)
         outRecord2.WriteHeader(TestOutt), initial2 = false;  // Only Once.
@@ -308,10 +304,10 @@ void ShowAllData() {
         cout << "unpack " << res << endl;
         student.Print(cout);
 
+        ShowGrades(student.id);
     }
     TestIn.close();
 #pragma endregion
-
 }
 void showDeletedData() {
         Student student;
@@ -333,4 +329,26 @@ void showDeletedData() {
     TestIn.close();
 #pragma endregion
 
+}
+
+void ShowGrades(int id) {
+    ifstream file("enrollments.dat", ios::binary);
+
+    if (!file) {
+        cout << "Unable to open the file." << endl;
+        return;
+    }
+
+    VariableLengthRecord record;
+    Enrollment enroll;
+
+    record.ReadHeader(file);
+    while (record.Read(file)) {
+        // Unpack the record into the student object
+        enroll.Unpack(record);
+        if (enroll.studentID == id)
+            enroll.PrintEnrollment();
+    }
+
+    file.close();
 }

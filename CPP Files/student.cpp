@@ -83,9 +83,10 @@ int Student::Unpack(VariableLengthRecord& record)
 
 void Student::Print(ostream& stream)
 {
-	stream << "Student:"
-		<< "\tId '" << id << "'\n"
-		<< "\tName '" << Name << "'\n"
-        << "\tGpa '" << gpa << "'\n"
-        << "\tGrade '" << grade << "'\n";
+    stream << "Student Information:\n"
+           << "\tID: " << id << "\n"
+           << "\tName: " << Name << "\n"
+           << "\tGPA: " << gpa << "\n"
+           << "\tGrade: " << grade << "\n";
 }
+
