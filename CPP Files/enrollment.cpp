@@ -44,8 +44,8 @@ int Enrollment::Pack(VariableLengthRecord& record) const {
 
     record.Clear(recordSize);
 
-    result = record.Pack(0, (void*)studentID, sizeof(studentID));
-    result = record.Pack(1, (void*)numCourses, sizeof(numCourses));
+    result = record.Pack(0, (void*)&studentID, sizeof(studentID));
+    result = record.Pack(1, (void*)&numCourses, sizeof(numCourses));
     for (int i = 2; i < numCourses + 1; ++i) {
         result = result && record.Pack(i + 1, (void*)courses[i].c_str(), courses[i].length() + 1);
         result = result && record.Pack(i + numCourses + 1, (void*)grades[i].c_str(), grades[i].length() + 1);
