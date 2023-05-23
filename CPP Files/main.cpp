@@ -116,8 +116,10 @@ void findStdByID() {
 //        cout <<"read "<<inRecord.Read(TestIn)<<endl;
         bool res = student.Unpack(inRecord);
 //        cout <<"unpack "<<student.Unpack(inRecord)<<endl;
-        if (student.id == searchID)
+        if (student.id == searchID) {
             student.Print(cout);
+            ShowGrades(searchID);
+        }
     }
     TestIn.close();
 #pragma endregion
