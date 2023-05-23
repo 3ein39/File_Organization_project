@@ -7,10 +7,6 @@ Student::Student()
 	Name[0] = 0;
     grade = 0;
     gpa = 0;
-//
-//    subjects[0] = "Computer Science";
-//    subjects[1] = "File Organization";
-//    subjects[2] = "DSP";
 }
 
 Student::Student(short id, char name[], float gpa,/* int degrees[], */ int grade)
@@ -20,12 +16,8 @@ Student::Student(short id, char name[], float gpa,/* int degrees[], */ int grade
     this->gpa = gpa;
     this->grade = grade;
 
-//    for (int i = 0; i < 3; ++i) {
-//        this->degrees[i] = degrees[i];
-//    }
 }
 
-// initialize a VariableLengthRecord to be used for Student
 void Student::InitRecord(VariableLengthRecord& record)
 {
 	record.init(10);
@@ -33,12 +25,6 @@ void Student::InitRecord(VariableLengthRecord& record)
     record.AddField(1, 'D', '|');
     record.AddField(2, 'D', '|');
     record.AddField(3, 'D', '|');
-//    record.AddField(4, 'D', '|');
-//    record.AddField(5, 'D', '|');
-//    record.AddField(6, 'D', '|');
-//    record.AddField(7, 'D', '|');
-//    record.AddField(8, 'D', '|');
-//    record.AddField(9, 'D', '|');
 }
 int Student::Pack(VariableLengthRecord& record)
 {
@@ -57,17 +43,6 @@ int Student::Pack(VariableLengthRecord& record)
 
     result = result && record.Pack(3, (void*)&grade, sizeof(grade));
 
-//    result = result && record.Pack(4, (void*)&subjects[0], subjects[0].size() * 8);
-//
-//    result = result && record.Pack(5, (void*)&degrees[0], sizeof(degrees[0]));
-//
-//    result = result && record.Pack(6, (void*)&subjects[1], subjects[1].size() * 8);
-//
-//    result = result && record.Pack(7, (void*)&degrees[1], sizeof(degrees[1]));
-//
-//    result = result && record.Pack(8, (void*)&subjects[2], subjects[2].size() * 8);
-//
-//    result = result && record.Pack(9, (void*)&degrees[2], sizeof(degrees[2]));
 	return result;
 }
 

@@ -13,21 +13,6 @@ const string enrollmentsFile = "enrollments.dat";
 Enrollment::Enrollment() {
 }
 
-//Enrollment::Enrollment(const string& id, int num, const string* crs, const string* grds) {
-//    studentID = id;
-//    numCourses = num;
-//    courses = new string[numCourses];
-//    grades = new string[numCourses];
-//    for (int i = 0; i < numCourses; ++i) {
-//        courses[i] = crs[i];
-//        grades[i] = grds[i];
-//    }
-//}
-//
-//Enrollment::~Enrollment() {
-//    delete[] courses;
-//    delete[] grades;
-//}
 
 int Enrollment::Pack(VariableLengthRecord& record) const {
 
@@ -68,11 +53,6 @@ int Enrollment::Unpack(VariableLengthRecord& record) {
 }
 
 void Enrollment::WriteEnrollment(VariableLengthRecord& record) {
-//    fstream file(enrollmentsFile, ios::in | ios::out | ios::binary | ios::app);
-//    if (!file) {
-//        cout << "Unable to open enrollments file." << endl;
-//        return;
-//    }
 
     Enrollment enrollment = *this;
 
@@ -84,9 +64,6 @@ void Enrollment::WriteEnrollment(VariableLengthRecord& record) {
     record.AddField(4, 'D', '|');
     record.AddField(5, 'D', '|');
     record.AddField(6, 'D', '|');
-
-//    enrollment.Pack(record);
-//    record.Write(file);
 
 //    file.close();
 //    cout << "Enrollment written successfully!" << endl;
