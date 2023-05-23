@@ -21,7 +21,7 @@ void updateStudentInfo();
 void showDeletedData();
 void ShowGrades(int id);
 void updateStudentDegrees();
-
+void deleteDegree(int id);
 int main()
 {
   STD();
@@ -62,7 +62,7 @@ int main()
 
 
 void deleteStudent() {
-        int searchID;
+    int searchID;
     cout << "Enter the ID of the student to delete: ";
     cin >> searchID;
 
@@ -86,6 +86,43 @@ void deleteStudent() {
             short newId = -1;
             file.write((char*)& newId, sizeof(short));
 
+
+            deleteDegree(student.id);
+
+            found = true;
+            break;
+        }
+    }
+
+    file.close();
+
+    if (found) {
+        cout << "Student deleted successfully!" << endl;
+    } else {
+        cout << "Student not found." << endl;
+    }
+}
+
+void deleteDegree(int id) {
+    fstream file("enrollments.dat", ios::in | ios::out | ios::binary);
+
+    if (!file) {
+        cout << "Unable to open the file." << endl;
+        return;
+    }
+
+    VariableLengthRecord record;
+    Enrollment enroll;
+
+    bool found = false;
+    record.ReadHeader(file);
+    while (record.Read(file)) {
+        // Unpack the record into the enroll object
+        enroll.Unpack(record);
+        if (enroll.studentID == id) {
+            file.seekp(-record.RecordSize(), ios::cur);
+            short newId = 0;
+            file.write((char*)& newId, sizeof(short));
             found = true;
             break;
         }
